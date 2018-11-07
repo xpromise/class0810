@@ -11,3 +11,25 @@
     3. 删除包
       - npm remove xxx  将指定的包删除了，将相关的依赖也会删除
  */
+
+/*
+  package.json:
+    {
+      "name": "react_ui",   //包名
+      "version": "0.1.0",   //包版本
+      "dependencies": {     // 生产依赖：项目运行时使用的依赖
+        "antd-mobile": "^2.2.6",   // 2.2.x  版本必须是2.2最后一个版本默认下载最新的
+        "prop-types": "~15.6.2",   // 15.x.x  版本必须15，后面版本默认下载最新的
+        "react-scripts": "2.0.5"   // 版本必须是这个
+      },
+      "scripts": {   // 项目运行/启动的指令
+        "start": "react-app-rewired start",   //npm start
+        "build": "react-app-rewired build",   //npm run build
+        "test": "react-app-rewired test --env=jsdom"  //npm run test
+      },
+      "devDependencies": {  // 开发依赖：项目构建打包时使用的依赖
+        "babel-plugin-import": "^1.11.0",
+        "react-app-rewired": "^1.6.2"
+      }
+    }
+ */
