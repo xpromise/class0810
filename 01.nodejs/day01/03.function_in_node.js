@@ -10,6 +10,7 @@
      - 能让我使用commonjs模块化，还能读取当前文件/文件夹路径
      - 避免变量命名冲突
      - 隐藏内部实现
+     
  */
 
 console.log(arguments.callee.toString()); //实参列表
