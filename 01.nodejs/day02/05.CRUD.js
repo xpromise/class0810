@@ -24,7 +24,6 @@ show dbs
 			db.collection.updateMany(查询条件, 要更新的内容[, 配置对象])
 		- Delete
 			db.collection.remove(查询条件)
-				
 */
 
 db.students.find()
