@@ -22,6 +22,7 @@ app.get('/login', (request, response) => {
   //返回响应
   response.send('<h1>这是express服务器返回的响应</h1>');
 })
+
 app.post('/register', (request, response) => {
 
 })
