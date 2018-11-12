@@ -7,6 +7,8 @@ const Users = require('./models/users');
 //创建app应用对象
 const app = express();
 //通过内置中间件暴露出去静态页面
+/*const middleware = express.static('public');  (req, res, next) => {}
+app.use(middleware);*/
 app.use(express.static('public'));
 //通过内置中间件解析请求体内容
 app.use(express.urlencoded({extended: true}));
@@ -23,12 +25,13 @@ db
        */
       // 1. 获取用户提交的请求参数
       const {username, pwd, rePwd, email} = req.body;
+      // const username = req.body.username;
       // 2. 判断用户输入是否合法
       //建立正则规则
       const usernameReg = /^[A-Za-z0-9_]{5,16}$/;   //用户名可以包含英文字母、数字、下划线，长度为5-16
       const pwdReg = /^[A-Za-z0-9_]{5,20}$/;   //密码可以包含英文字母、数字、下划线，长度为5-20
       const emailReg = /^[A-Za-z0-9_]{3,8}@[A-Za-z0-9_]{2,8}\.com$/;   // 邮箱格式
-    
+      
       if (!usernameReg.test(username)) {
         //说明用户名输入不合法
         res.send('用户名可以包含英文字母、数字、下划线，长度为5-16');
@@ -66,10 +69,36 @@ db
       }
     })
     //处理登录逻辑的路由
-    app.post('/login', (req, res) => {
+    app.post('/login', async (req, res) => {
+      /*
+        1. 获取用户提交参数
+        2. 去数据库中找用户名和密码是否匹配正确
+        3. 登录成功
+       */
+      // 1. 获取用户提交参数
+      const {username, pwd} = req.body;
+      // 2. 去数据库中找用户名和密码是否匹配正确
+      try {
+        const user = await Users.findOne({username, pwd});
+        if (user) {
+          // 3. 登录成功
+          res.send('用户登录成功~');
+        } else {
+          //用户名或密码错误
+          res.send('用户名或密码错误');
+        }
+      } catch (e) {
+        console.log(e);
+        res.send('网络不稳定，请刷新重试~');
+      }
     
     })
   })
+
+/*;(async () => {
+  await db;
+  //设置路由
+})()*/
 
 //监听端口号
 app.listen(3000, err => {
