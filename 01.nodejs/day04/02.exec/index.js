@@ -9,7 +9,7 @@ const app = express();
 //通过内置中间件暴露出去静态页面
 /*const middleware = express.static('public');  (req, res, next) => {}
 app.use(middleware);*/
-app.use(express.static('public'));
+// app.use(express.static('public'));
 //通过内置中间件解析请求体内容
 app.use(express.urlencoded({extended: true}));
 
@@ -92,6 +92,16 @@ db
         res.send('网络不稳定，请刷新重试~');
       }
     
+    })
+    //返回登录页面的路由
+    app.get('/login', (req, res) => {
+      //返回登录页面
+      res.sendFile(__dirname + '/public/login.html');
+    })
+    //返回注册页面的路由
+    app.get('/register', (req, res) => {
+      //返回注册页面
+      res.sendFile(__dirname + '/public/register.html');
     })
   })
 

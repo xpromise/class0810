@@ -1,0 +1,26 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <!--< %  % > 能执行任意的js代码，没有任何输出到页面上-->
+  <% '<h2>hello ejs</h2>'; console.log(123123456456); %>
+
+  <%= '<h2>hello ejs</h2>' %>
+  <%- '<h2>hello ejs</h2>' %>
+
+<ul>
+  <% for (var i = 0; i < data.length; i++) { %>
+    <li>
+      <h2><%= data[i].name %></h2>
+      <p><%= data[i].age %></p>
+    </li>
+  <% } %>
+</ul>
+
+</body>
+</html>
