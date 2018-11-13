@@ -19,6 +19,9 @@ const app = express();
       2. 解决http无状态问题，标识不同的用户
     应用：
       7天免登陆
+    缺点：
+      1. 容量小
+      2. 传输流量大（每次发送请求时，都自动携带上所有cookie）
  */
 // 使用第三方中间件, 解析cookie数据，将解析后的对象挂载req.cookies
 app.use(cookieParser());

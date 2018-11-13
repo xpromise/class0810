@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>register</title>
+  <style>
+    .err-msg{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<h2>注册</h2>
+<form action="http://localhost:3000/register" method="post">
+  <span class="err-msg"><%= errMsg.networkErr %></span> <br>
+  用户名: <input type="text" name="username" value="<%= errMsg.username %>"> <span class="err-msg"><%= errMsg.usernameErr %></span>
+  <br><br>
+  密码: <input type="password" name="pwd"> <span class="err-msg"><%= errMsg.pwdErr %></span> <br><br>
+  确认密码: <input type="password" name="rePwd"> <span class="err-msg"><%= errMsg.rePwdErr %></span> <br><br>
+  邮箱: <input type="text" name="email" value="<%= errMsg.email %>"> <span class="err-msg"><%= errMsg.emailErr %></span> <br><br>
+  <input type="submit" value="注册">
+</form>
+</body>
+</html>
