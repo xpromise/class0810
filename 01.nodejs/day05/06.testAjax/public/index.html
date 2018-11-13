@@ -6,5 +6,63 @@
 </head>
 <body>
 <input type="text" placeholder="请输入验证码"> <button id="btn">点击获取验证码</button>
+<script type="text/javascript">
+
+  // let flag = false;
+  let lastTime = 0;
+  //标识之前有没有创建xhr对象
+  let hasXHR = null;
+  // let timer = null;
+  //函数节流: 让第一次函数调用生效，然后在规定时间内，函数不能在触发了
+  //函数反抖: 规定时间内，让最后一次函数调用生效，前面函数都要取消
+  //让一个函数更少的调用，节约性能
+  document.getElementById('btn').onclick = function () {
+    const nowTime = Date.now();
+    if (nowTime - lastTime <= 5000) return;
+    // if (flag) return;
+    lastTime = nowTime;
+    // clearTimeout(timer);
+    // flag = true;
+    /*timer = setTimeout(() => {
+      flag = false;
+    }, 5000)*/
+    let time = 5;
+    this.innerText = `已发送(${time}s)`;
+    this.style.color = 'gray';
+
+    const timer = setInterval(() => {
+      this.innerText = `已发送(${--time}s)`;
+      if (time <= 0) {
+        this.innerText = '点击获取验证码';
+        this.style.color = 'black';
+        clearInterval(timer);
+      }
+    }, 1000)
+
+    if (hasXHR) {
+      //说明上一次发送过了，取消上一次的发送ajax请求
+      hasXHR.abort(); //请求发出去了，但是取消接受响应结果
+    }
+    //发送ajax请求
+    hasXHR = sendAjax('GET', '/testAjax');
+  }
+
+  function sendAjax(method, url) {
+    //发送ajax
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+        hasXHR = null;
+      }
+    }
+    xhr.open(method, url);
+    xhr.send();
+    return xhr;
+  }
+
+
+
+</script>
 </body>
 </html>

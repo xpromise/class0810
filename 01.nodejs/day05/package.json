@@ -1,0 +1,15 @@
+{
+  "name": "cookie_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "02.cookie.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4"
+  }
+}

@@ -4,7 +4,9 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/testAjax', (req, res) => {
-  res.send('9527');
+  setTimeout(() => {
+    res.send('9527');
+  }, 10000)
 })
 
 app.listen(3000, err => {
