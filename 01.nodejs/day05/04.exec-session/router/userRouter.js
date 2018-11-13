@@ -1,5 +1,6 @@
 //引入express模块
 const express = require('express');
+const sha1 = require('sha1');
 //引入Users模块
 const Users = require('../models/users');
 //获取Router对象
@@ -84,7 +85,7 @@ router.post('/register', async (req, res) => {
     } else {
       //没有当前用户
       // 4. 将用户数据保存在数据库中
-      await Users.create({username, pwd, email});  //可能出错
+      await Users.create({username, pwd: sha1(pwd), email});  //可能出错
       res.redirect('/login');
     }
   } catch (e) {
@@ -105,7 +106,10 @@ router.post('/login', async (req, res) => {
   const {username, pwd} = req.body;
   // 2. 去数据库中找用户名和密码是否匹配正确
   try {
-    const user = await Users.findOne({username, pwd});
+    //明文：用户原始输入
+    //密文：加密后生成的字符串
+    //同样的明文必定得到同样的密文，不可逆的方式加密的生成一个唯一的特定长度的密文
+    const user = await Users.findOne({username, pwd: sha1(pwd)});
     if (user) {
       // 3. 登录成功
       //设置session
