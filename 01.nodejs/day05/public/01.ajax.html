@@ -39,9 +39,20 @@
         }
       }
       // 3. 设置请求信息  (请求方式、请求地址、请求参数、请求头信息。。。)
-      xhr.open('GET', 'http://localhost:3000/testAjax?username=sunwukong');
-      // xhr.setRequestHeader('content-type', 'text/plain');
+      // get请求参数在请求地址后以查询字符串方式设置
+      // post请求参数在xhr.send()方法中传入请求参数，以urlencoded编码方式写
+      /*
+        Chrome/firefox
+          get请求默认走缓存（会访问服务器，由服务器告诉你走缓存）
+        IE
+          get请求默认走缓存（不会访问服务器，直接读取缓存）
+          当请求地址和请求参数和上一次完全一样，直接走缓存。改请求参数，让每次请求都不一样，这样就不会走缓存了
+       */
+      xhr.open('GET', 'http://localhost:3000/testAjax?username=sunwukong&age=18&date=' + Date.now());
+      // xhr.open('POST', 'http://localhost:3000/testAjax');
+      // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
       // 4. 发送请求
+      // xhr.send('name=sunwukong&age=18');
       xhr.send();
     }
   </script>
