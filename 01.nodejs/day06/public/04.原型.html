@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>原型</title>
+</head>
+<body>
+  <script type="text/javascript">
+    /*
+      1. 原型是什么？
+        - prototype  显示原型
+        - __proto__  隐式原型
+      2. 原型属性在哪里？
+        - prototype  所有函数(箭头函数没有)都有一个显示原型属性
+        - __proto__  所有实例对象都有一个隐式原型属性（函数也是对象）
+
+        实例对象的隐式原型属性指向其构造函数的显示原型属性
+
+        显示原型属性指向的对象我们称之为原型对象
+        原型对象默认有：
+          constructor 指向函数本身
+          __proto__   指向Object.prototype
+      3. 原型属性有什么作用？
+        实现继承
+      4. 原型链是什么？
+        由多个隐式原型属性构成链状结构，我们称之为原型链
+      5. 原型链有什么作用？
+        用来查找对象的属性或者方法，沿着原型链找。  找到了返回结果，没有找到返回undefined
+      6. 原型链的尽头
+        Object.prototype.__proto__ === null
+
+      总结:
+        1. 所有函数(箭头函数没有)都有一个显示原型属性，值称之为原型对象
+        2. 原型对象默认有两个属性
+          constructor 指向函数本身
+          __proto__   指向Object.prototype，可以看做new Object()产生的实例对象
+        3. 所有实例对象都有一个隐式原型属性（函数也是对象）， 实例对象的隐式原型属性指向其构造函数的显示原型属性
+        4. 原型链的尽头： Object.prototype.__proto__ === null
+        5. Function.__proto__ === Function.prototype
+        6. 所有函数都是new Function()产生的实例
+        7. 除了自己new其他构造函数的产生的对象，其他对象都是new Object()产生的实例对象
+     */
+
+    /*function fn() {
+
+    }
+    console.log(fn.prototype.__proto__  === Object.prototype);
+    console.log(fn.__proto__);
+    const foo = () => {};
+    console.log(foo.prototype);
+    console.log(foo.__proto__);
+
+    const obj = {};
+    console.log(obj);*/
+
+    function Person(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+    const p = new Person('jack', 18);
+    console.log(p.__proto__ === Person.prototype);  //true
+
+  </script>
+</body>
+</html>
