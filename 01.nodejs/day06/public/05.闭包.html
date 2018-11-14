@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>闭包</title>
+</head>
+<body>
+  <script type="text/javascript">
+    /*
+      1. 产生闭包的条件：
+        - 函数嵌套
+        - 内部函数引入外部函数的变量
+        - 执行外部函数
+      2. 闭包存在哪？
+        - 嵌套的内部函数中
+      3. 闭包是什么？
+        通过chrome开发者工具调试查看，闭包是一个closure对象，包含被引用局部变量的对象，存在嵌套的内部函数中
+      4. 闭包生命周期：
+        产生：执行内部嵌套的函数的定义时，闭包产生了
+        死亡：当嵌套的内部函数成为一个垃圾对象时，闭包就会死亡
+      5. 闭包作用
+        - 让函数外部可以操作函数内部的变量
+        - 延长局部变量的生命周期
+      6. 闭包应用：
+        - js模块化
+      7. 闭包缺点
+        很多时候并不想使用闭包，但是写着写着闭包就产生。
+        - 闭包没有及时释放，容易导致内存泄漏。
+        解决：
+          写代码中注意，及时清除不使用的闭包和变量
+     */
+
+    /*function fn1() {
+      debugger
+      var a = 1;
+      function fn2() {
+        console.log(a);
+      }
+    }
+    fn1();*/
+
+    /*function fn1() {
+      var a = 1;
+      return {
+        fn2() {
+          console.log(a++);
+        },
+        fn3() {
+          console.log(a);
+        }
+      }
+    }
+
+    let f = fn1();
+    f.fn2();  // 1  {a: 2}
+    f.fn2();  // 2  {a: 3}
+    f.fn3();  // 3
+    f = null;*/
+
+    function fn1() {
+      /*const that = this;
+      function fn2() {
+        console.log(that);
+      }*/
+      const fn2 = () => {
+        console.log(this);
+      }
+    }
+
+  </script>
+</body>
+</html>
