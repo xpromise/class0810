@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">点击发送jsonp</button>
+<script type="text/javascript">
+  document.getElementById('btn').onclick = function () {
+    /*
+      jsonp： 利用script天然可以跨域的特性解决跨域。
+      特点：
+        1. 兼容性极好
+        2. 只能发送get
+     */
+
+    //创建一个script标签
+    const script = document.createElement('script');
+    //设置全局中的回调函数
+    window.getData = function (data) {
+      console.log(data);
+    }
+    //给script设置src属性，设置请求地址和请求的参数
+    script.src = 'http://localhost:3000/testJSONP?callback=getData';
+    //添加到body中生效
+    document.body.appendChild(script);
+  }
+</script>
+</body>
+</html>

@@ -26,7 +26,7 @@
     const $county = $('#county');
 
     //一上来请求所有省份的数据
-    $.get('/province', function (result) {
+    $.get('http://localhost:4000/province', function (result) {
       if (result.code === 1) {
         //成功且有数据
         let html = '<option>请选择省份</option>';
