@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>三级联动</title>
+</head>
+<body>
+
+<select id="province">
+	<option>请选择省份</option>
+</select> 省
+
+<select id="city">
+	<option>请选择市</option>
+</select> 市
+
+<select id="county">
+	<option>请选择区(县)</option>
+</select> 区(县)
+
+<script type="text/javascript" src="./js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+	$(function () {
+    const $province = $('#province');
+    const $city = $('#city');
+    const $county = $('#county');
+
+    //一上来请求所有省份的数据
+    $.get('/province', function (result) {
+      if (result.code === 1) {
+        //成功且有数据
+        let html = '<option>请选择省份</option>';
+        result.data.forEach(item => {
+          html += `<option value="${item.province}">${item.name}</option>`;
+        })
+        $province.html(html);
+      } else {
+        //失败
+        alert(result.err);
+      }
+    })
+
+    $province.change(function () {
+      //获取当前省份信息
+      const province = this.value;
+      //发送请求
+      $.get('/city', {province}, function (result) {
+        if (result.code === 1) {
+          //成功且有数据
+          let html = '<option>请选择市</option>';
+          result.data.forEach(item => {
+            html += `<option value="${item.city}">${item.name}</option>`;
+          })
+          $city.html(html);
+        } else {
+          //失败
+          alert(result.err);
+        }
+      })
+    })
+
+
+	})
+</script>
+</body>
+</html>
