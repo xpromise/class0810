@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery ajax</title>
+</head>
+<body>
+<button id="btn">点击发送ajax请求</button>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $('#btn').click(function () {
+      //发送ajax请求
+      /*$.ajax('/testAjax', {
+        method: 'GET',
+        data: {
+          username: 'sunwukong'
+        },
+        headers: {
+
+        },
+        success (data) {
+          console.log(data);
+        },
+        error (err) {
+          console.log(err);
+        }
+      })*/
+
+      //简写方式
+      $.get('/testAjax', {username: 'xxx'}, function (data) {
+        console.log(data);
+      })
+    })
+  </script>
+</body>
+</html>
