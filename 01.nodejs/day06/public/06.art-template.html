@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>art-template</title>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <script type="text/html" id="myTpl1">
+    <% for(var i =0;i < data.length;i++) { %>
+    <p>用户名： <%= data[i].name %>   年龄：<%= data[i].name %> </p>
+    <% } %>
+  </script>
+
+  <script type="text/html" id="myTpl2">
+    {{each data}}
+      <p>用户名：  {{$value.name}}   年龄：{{$value.age}} - {{$index}} </p>
+    {{/each}}
+  </script>
+
+  <script type="text/javascript" src="./jquery-1.12.4.js"></script>
+  <script type="text/javascript" src="./template-web.js"></script>
+  <script type="text/javascript">
+    /*
+      1. 引入art-template，通常和jQuery一起使用
+      2. 创建模板代码
+        - 创建script标签，将type属性改为text/html
+        - 设置id属性，方便查找当前标签元素
+        - 模板代码
+      3. 将模板代码编译解析为html字符串
+      4. 将编译后html字符串添加到页面容器中生效
+     */
+    const data = [
+      {name: '<span>Jack</span>', age: 18},
+      {name: 'Rose', age: 16}
+    ]
+    // 3. 将模板代码编译解析为html字符串
+    const html = template('myTpl2', {data});
+    console.log(html);
+    // 4. 将编译后html字符串添加到页面容器中生效
+    $('#container').html(html);
+
+  </script>
+</body>
+</html>
