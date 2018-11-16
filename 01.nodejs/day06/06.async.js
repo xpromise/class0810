@@ -5,7 +5,6 @@
  */
 
 (async () => {
-  
   const result = await new Promise((resolve, reject) => {
     setTimeout(function () {
       console.log('定时器执行完了');
