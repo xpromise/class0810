@@ -32,6 +32,11 @@ const LessAutoprefix = require('less-plugin-autoprefix');
 const autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
 const concat = require('gulp-concat');
 const cssmin = require('gulp-cssmin');
+const htmlmin = require('gulp-htmlmin');
+const livereload = require('gulp-livereload');
+const connect = require('gulp-connect');
+const opn = require('opn');
+
 
 //配置插件任务
 
@@ -41,7 +46,8 @@ gulp.task('jshint', () => {
     .pipe(jshint({
       esversion: 6
     }))   //对gulp流中的文件做了语法检查
-    .pipe(jshint.reporter('default'));  //将语法检查的错误在控制台打印输出
+    .pipe(jshint.reporter('default'))  //将语法检查的错误在控制台打印输出
+    .pipe(livereload());
 })
 //语法转化
 gulp.task('babel', ['jshint'], () => {
@@ -50,6 +56,7 @@ gulp.task('babel', ['jshint'], () => {
       presets: ['@babel/env']
     }))
     .pipe(gulp.dest('build/js'))  //将gulp流中的文件输出到指定目录中
+    .pipe(livereload());
 });
 //browserify 将commonjs模块化语法转化为浏览器能识别的语法
 gulp.task('browserify', ['babel'], function() {
@@ -58,6 +65,7 @@ gulp.task('browserify', ['babel'], function() {
     .pipe(browserify())  //将commonjs模块化语法转化为浏览器能识别的语法
     .pipe(rename('built.js'))  //将gulp流中的文件重命名
     .pipe(gulp.dest('./build/js')) //将gulp流中的文件输出到指定目录中
+    .pipe(livereload());
 });
 //压缩js
 gulp.task('uglify', ['browserify'], function () {
@@ -65,6 +73,7 @@ gulp.task('uglify', ['browserify'], function () {
     .pipe(uglify())  //压缩js
     .pipe(rename('dist.min.js'))
     .pipe(gulp.dest('dist/js'))
+    .pipe(livereload());
 });
 //编译less成css
 gulp.task('less', function () {
@@ -72,21 +81,54 @@ gulp.task('less', function () {
     .pipe(less({
       plugins: [autoprefix]
     }))
-    .pipe(gulp.dest('./build/css'));
+    .pipe(gulp.dest('./build/css'))
+    .pipe(livereload());
 });
 //合并css样式
 gulp.task('concat', ['less'], function() {
   return gulp.src(['./build/css/test1.css', './build/css/test2.css'])
     .pipe(concat('built.css'))
-    .pipe(gulp.dest('./build/css'));
+    .pipe(gulp.dest('./build/css'))
+    .pipe(livereload());
 });
 //压缩css
 gulp.task('cssmin', ['concat'], function () {
   gulp.src('build/css/built.css')
     .pipe(cssmin())
     .pipe(rename('dist.min.css'))
-    .pipe(gulp.dest('dist/css'));
+    .pipe(gulp.dest('dist/css'))
+    .pipe(livereload());
+});
+//压缩html
+gulp.task('htmlmin', () => {
+  return gulp.src('src/index.html')
+    .pipe(htmlmin({
+      collapseWhitespace: true,  //去除空格
+      removeComments: true      //删除注释
+    }))
+    .pipe(gulp.dest('dist'))
+    .pipe(livereload());
+});
+//自动执行任务，编译代码
+gulp.task('watch', function() {
+  /*
+   1. 在所有可能要执行任务后面加上 .pipe(livereload());
+   2. 配置watch任务
+ */
+  livereload.listen();
+  //通过自己服务器打开项目，自动刷新
+  connect.server({
+    root: 'dist',
+    port: 3000,
+    livereload: true  // 自动刷新
+  });
+  //自动打开浏览器
+  opn('http://localhost:3000/index.html');
+  //监视指定文件（第一个参数），一旦文件发生变化，就自动执行后面的任务（第二个参数）
+  gulp.watch('./src/less/*.less', ['cssmin']);
+  gulp.watch('./src/js/*.js', ['uglify']);
+  gulp.watch('./src/index.html', ['htmlmin']);
 });
 
 //配置默认任务
-gulp.task('default', ['uglify', 'cssmin'])
+gulp.task('default', ['uglify', 'cssmin', 'htmlmin', 'watch'])
