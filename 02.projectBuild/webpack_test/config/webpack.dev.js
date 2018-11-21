@@ -11,15 +11,24 @@
       2. 下载插件
       3. 引入插件
       4. 配置插件
+      
+   依赖区别：
+      1. 开发依赖：项目构建打包时需要使用的依赖
+      2. 生产依赖：项目运行时需要使用的依赖
+   环境区别：
+      1. 开发环境：帮助项目自动编译更新、检查语法错误、准确的错误提示等...(通常不进行代码压缩, 没有任何文件输出，在内存中编译运行的)
+      2. 生产环境：构建打包生成项目上线用的资源文件
+   
    
    如何运行：在项目的根目录运行 webpack （默认会找配置文件）
  */
 const {resolve} = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   //入口起点
-  entry: './src/js/index.js',
+  entry: ['./src/js/index.js', './src/index.html'],
   //输出
   output: {
     path: resolve(__dirname, './build'),
@@ -45,7 +54,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192,   // 8kb以下的图片会做base64处理
-              publicPath: '../build/images',  //修改样式中url图片路径
+              publicPath: '../images',  //修改样式中url图片路径
               outputPath: 'images',  //图片最终输入的路径
               name: '[hash:10].[ext]'  //hash 文件哈希值（可以指定位数）  ext 文件扩展名
             }
@@ -86,6 +95,12 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader'
+        }
       }
     ]
   },
@@ -94,5 +109,19 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'   //以指定文件为模板文件，创建新文件，新文件会将打包的资源全部引入
     }),
-  ]
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  /*
+    1. 下载包 webpack-dev-server@2  全局安装和本地安装
+    2. 通过 webpack-dev-server 指令启动热模替换功能
+    
+    热模替换功能要求所有的资源都必须通过loader加载，否则就解析不了
+   */
+  devServer: {
+    contentBase: './build',
+    hot: true, //开启热模替换功能
+    port: 3000,
+    open: true  //自动打开浏览器
+  },
 }

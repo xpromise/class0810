@@ -11,6 +11,7 @@ import '../less/test1.less';
 import '../less/test2.less';
 
 console.log(add(2, 3));
+console.log(add(5, 6));
 console.log(count(3, 2));
 console.log(sum(1, 2, 3, 4));
 console.log(data);
