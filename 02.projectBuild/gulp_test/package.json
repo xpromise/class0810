@@ -13,6 +13,14 @@
     "@babel/preset-env": "^7.1.6",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
-    "gulp-browserify": "^0.5.1"
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-less": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-uglify": "^3.0.1",
+    "jshint": "^2.9.6",
+    "less-plugin-autoprefix": "^2.0.0"
   }
 }
