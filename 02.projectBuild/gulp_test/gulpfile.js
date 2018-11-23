@@ -131,4 +131,5 @@ gulp.task('watch', function() {
 });
 
 //配置默认任务
-gulp.task('default', ['uglify', 'cssmin', 'htmlmin', 'watch'])
+gulp.task('default', ['uglify', 'cssmin', 'htmlmin', 'watch'])  //gulp运行
+gulp.task('myTask', ['uglify', 'cssmin', 'htmlmin', 'watch'])  // gulp myTask运行

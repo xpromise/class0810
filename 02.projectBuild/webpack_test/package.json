@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config ./config/webpack.dev.js"
+    "dev": "webpack-dev-server --config ./config/webpack.dev.js",
+    "prod": "webpack --config ./config/webpack.prod.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,12 +15,14 @@
     "@babel/preset-env": "^7.1.6",
     "babel-loader": "^8.0.0-beta.0",
     "css-loader": "^1.0.1",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "jshint-loader": "^0.8.4",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
+    "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "webpack": "^3.12.0",

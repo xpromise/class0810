@@ -16,7 +16,7 @@
       1. 开发依赖：项目构建打包时需要使用的依赖
       2. 生产依赖：项目运行时需要使用的依赖
    环境区别：
-      1. 开发环境：帮助项目自动编译更新、检查语法错误、准确的错误提示等...(通常不进行代码压缩)
+      1. 开发环境：帮助项目自动编译更新、检查语法错误、准确的错误提示等...(通常不进行代码压缩, 没有任何文件输出，在内存中编译运行的)
       2. 生产环境：构建打包生成项目上线用的资源文件
    
    
@@ -24,28 +24,36 @@
  */
 const {resolve} = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanCSSPlugin = require("less-plugin-clean-css");
 const webpack = require('webpack');
 
 module.exports = {
   //入口起点
-  entry: ['./src/js/index.js', './src/index.html'],
+  entry: './src/js/index.js',
   //输出
   output: {
-    path: resolve(__dirname, './build'),
-    filename: './js/built.js'
+    path: resolve(__dirname, '../dist'),
+    filename: './js/[hash:10].js'
   },
   //loader
   module: {
     rules: [
       {
-        test: /\.less$/,  // 匹配文件的规则，说明loader对哪些文件生效
-        use: [{  //从右往左依次同步执行
-          loader: "style-loader" // 创建一个style标签，将js中的css放入其中
-        }, {
-          loader: "css-loader" // 将css以commonjs语法打包到js中
-        }, {
-          loader: "less-loader" // 编译less为css
-        }]
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          //还需要下载autoprefixer
+          use: ['css-loader', 'postcss-loader', {
+            loader: "less-loader",
+            options: {
+              plugins: [
+                new CleanCSSPlugin({ advanced: true })
+              ]
+            }
+          }]
+        })
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -56,7 +64,7 @@ module.exports = {
               limit: 8192,   // 8kb以下的图片会做base64处理
               publicPath: '../images',  //修改样式中url图片路径
               outputPath: 'images',  //图片最终输入的路径
-              name: '[hash:10].[ext]'  //hash 文件哈希值（可以指定位数）  ext 文件扩展名
+              name: '[name].[ext]'  //hash 文件哈希值（可以指定位数）  ext 文件扩展名
             }
           }
         ]
@@ -96,32 +104,21 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.(html)$/,
-        use: {
-          loader: 'html-loader'
-        }
-      }
     ]
   },
   //插件
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html'   //以指定文件为模板文件，创建新文件，新文件会将打包的资源全部引入
+      template: './src/index.html',   //以指定文件为模板文件，创建新文件，新文件会将打包的资源全部引入
+      minify: {    //压缩html代码
+        removeComments: true,
+        collapseWhitespace: true
+      }
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  /*
-    1. 下载包 webpack-dev-server@2  全局安装和本地安装
-    2. 通过 webpack-dev-server 指令启动热模替换功能
-    
-    热模替换功能要求所有的资源都必须通过loader加载，否则就解析不了
-   */
-  devServer: {
-    contentBase: './build',
-    hot: true, //开启热模替换功能
-    port: 3000,
-    open: true  //自动打开浏览器
-  },
+    new ExtractTextPlugin('./css/[hash:10].css'), //提取css成单独文件
+    new CleanWebpackPlugin('./dist', {  //清除指定目录下的所有文件
+      root: resolve(__dirname, '../'),
+    }),
+    new webpack.optimize.UglifyJsPlugin()  //压缩js代码
+  ]
 }
