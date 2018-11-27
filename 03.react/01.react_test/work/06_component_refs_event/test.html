@@ -19,6 +19,43 @@
       2. 点击按钮, 提示第一个输入框中的值
       3. 当第2个输入框失去焦点时, 提示这个输入框中的值
    */
+    /*
+      refs作用： 用来获取dom元素
+     */
+    //定义组件
+    class MyComponent extends React.Component {
+
+      handleClick = () => {
+        console.log(this);
+        //获取input 这种方式被废弃了
+        // const value = this.refs.msgInput.value.trim();
+
+        const value = this.msgInput.value.trim();
+
+        alert(value);
+      }
+
+      handleBlur = event => {
+        console.log(event);
+        // console.log(event.target); //触发事件的目标元素
+        const value = event.target.value.trim();
+
+        alert(value);
+      }
+
+      render () {
+        return (
+          <div>
+            {/*<input type="text" ref="msgInput"/> */}
+            <input type="text" ref={input => this.msgInput = input}/> &nbsp;
+            <button onClick={this.handleClick}>点击按钮</button> &nbsp;
+            <input type="text" placeholder="失去焦点提示数据" onBlur={this.handleBlur}/>
+          </div>
+        )
+      }
+    }
+    //渲染组件
+    ReactDOM.render(<MyComponent />, document.getElementById('example'));
   </script>
 </body>
 </html>
