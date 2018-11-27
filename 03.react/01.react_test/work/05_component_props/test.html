@@ -11,6 +11,7 @@
 <script type="text/javascript" src="../js/react.development.js"></script>
 <script type="text/javascript" src="../js/react-dom.development.js"></script>
 <script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
 
 <script type="text/babel">
 
@@ -19,6 +20,72 @@
   1). 如果性别没有指定, 默认为男
   2). 如果年龄没有指定, 默认为18
   */
+  /*
+    props作用：
+      组件外向组件内传递可变的数据，组件内部只读不修改
+    state作用：
+      定义组件内使用的可变的状态数据
+   */
+
+  //定义组件
+  class Person extends React.Component {
+    /*
+      static关键字，是给Person类添加属性或者方法
+      不用static关键字，是给类的实例对象添加属性或者方法
+     */
+    static propTypes = {
+      name: PropTypes.string.isRequired,
+      age: PropTypes.number,
+      sex: PropTypes.string
+    }
+
+    static defaultProps = {
+      age: 18,
+      sex: '男'
+    }
+
+    state = {
+      xxx: 123
+    }
+
+    render () {
+      //接受组件外传递的props数据
+      const {name, age, sex} = this.props;
+      return (
+        <ul>
+          <li>姓名：{name}</li>
+          <li>性别：{sex}</li>
+          <li>年龄：{age}</li>
+        </ul>
+      )
+    }
+  }
+  //定义组件外的数据
+  const p = {
+    name: 'rose',
+    sex: '女',
+    age: 20
+  }
+
+  //组件声明接受属性的类型和必要性（必须的）
+  /*Person.propTypes = {
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number,
+    sex: PropTypes.string
+  }*/
+
+  //设置属性的默认值（不是必须的）
+  /*Person.defaultProps = {
+    age: 18,
+    sex: '男'
+  }*/
+
+  //渲染组件
+  //组件外向组件内传递数据，通过标签属性的方式传递
+  // ReactDOM.render(<Person name={p.name} age={p.age} sex={p.sex}/>, document.getElementById('example1'));
+  // 原生js对象不能使用... ， 但是在react中能用，babel帮你做了这个事
+  // ReactDOM.render(<Person {...p}/>, document.getElementById('example1'));
+  ReactDOM.render(<Person name={p.name}/>, document.getElementById('example1'));
 
 </script>
 </body>
