@@ -7,5 +7,20 @@
 <body>
   <h2>前端JS框架列表</h2>
   <div id="example1"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    //定义数据
+    const names = ['jQuery', 'Bootstrap', 'Express', 'React', 'Vue'];
+    // const arr = [<li>jQuery</li>, <li>Bootstrap</li>, <li>Express</li>, <li>React</li>, <li>Vue</li>];
+    // const arr = names.map((item, index) => <li>{item}</li>);
+    //渲染到页面上
+    ReactDOM.render((
+      <ul>
+        {names.map((item, index) => <li key={index}>{item}</li>)}
+      </ul>
+      ), document.getElementById('example1'));
+  </script>
 </body>
 </html>
