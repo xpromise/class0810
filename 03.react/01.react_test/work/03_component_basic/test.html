@@ -12,8 +12,31 @@
   <script type="text/javascript" src="../js/react.development.js"></script>
   <script type="text/javascript" src="../js/react-dom.development.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
-
   <script type="text/babel">
+    /*方式1: 工厂函数组件(简单组件)*/
+    function MyComponent1() {
+      console.log(this);  //undefined
+      return <h1>方式1: 工厂函数组件(简单组件)</h1>;
+    }
+    /*方式2:  ES6类组件(复杂组件)*/
+    //组件名必须首字母大写
+    class MyComponent2 extends React.Component {
+      render () {
+        console.log(this); //组件的实例对象
+        //必须有一个根标签
+        return (
+          <div>
+            <h1>方式2:  ES6类组件(复杂组件)</h1>
+            <div>xxxx</div>
+          </div>
+        );
+      }
+    }
+
+    //将组件渲染到页面上
+    ReactDOM.render(<MyComponent1 />, document.getElementById('example1'));
+    //标签：要么单标签自结束标签，要么是双标签
+    ReactDOM.render(<MyComponent2 />, document.getElementById('example2'));
   </script>
 </body>
 </html>
