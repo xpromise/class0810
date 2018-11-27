@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>01_HelloWorld</title>
+</head>
+<body>
+  <div id="test"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <!--将javascript修改为babel， 此时babel生效，能将react jsx语法转换成js语法-->
+  <script type="text/babel">
+    //创建虚拟DOM对象
+    const vDom = <h1>hello react!</h1>; //不能加引号
+    //将虚拟DOM对象渲染到页面的指定容器中
+    ReactDOM.render(vDom, document.getElementById('test'));
+  </script>
+</body>
+</html>
