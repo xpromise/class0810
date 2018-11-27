@@ -13,6 +13,95 @@
   <script type="text/javascript" src="../js/prop-types.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
   <script type="text/babel">
+    /*
+      1. 拆分组件 App TodoAdd ToDoList
+        根据页面的功能拆分，只有具备特定功能的才会拆分组件
+        一般都会有一个应用主组件 App
+      2. 实现静态组件
+        将组件全部定义好
+        有个基本显示效果，没有交互效果
+      3. 实现动态组件
+        - 数据定义在哪？ 如果是单个组件用，就定义在那个组件内，如果多个组件用，就定义在他们的公共父组件中
+        - 数据是什么类型？  object array
+        - 数据叫什么名字？ toDos
+        - 实现交互效果
+
+      重要的问题：
+        修改状态数据的方法：状态定义在哪，修改数据的方法就定义在哪
+        数据定义在哪？ 如果是单个组件用，就定义在那个组件内，如果多个组件用，就定义在他们的公共父组件中
+     */
+    class App extends React.Component {
+      state = {
+        toDos: ['吃饭~', '睡觉~', '打豆豆~']
+      }
+      //更新状态数据的方法
+      add = toDo => {
+        //更新状态
+        this.setState({
+          toDos: [toDo, ...this.state.toDos]
+        })
+      }
+
+      render () {
+        //获取状态值
+        const {toDos} = this.state;
+        return (
+          <div>
+            <h1>simple todo list</h1>
+            <ToDoAdd add={this.add} length={toDos.length}/>
+            <ToDoList toDos={toDos}/>
+          </div>
+        )
+      }
+    }
+
+    class ToDoAdd extends React.Component {
+      static propTypes = {
+        add: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired
+      }
+
+      addToDo = () => {
+        //获取input输入框的值
+        let value = this.msgInput.value.trim();
+        //调用父类add方法添加数据
+        this.props.add(value);
+        //清空用户的输入
+        this.msgInput.value = '';
+      }
+
+      render () {
+        return (
+          <div>
+            <input type="text" ref={input => this.msgInput = input}/>
+            <button onClick={this.addToDo}>Add #{this.props.length}</button>
+          </div>
+        )
+      }
+    }
+
+    class ToDoList extends React.Component {
+      static propTypes = {
+        toDos: PropTypes.array.isRequired
+      }
+
+      render () {
+        //获取组件外组件内传递的props数据
+        const {toDos} = this.props;
+        return (
+          <ul>
+            {
+              /*toDos.map((toDo, index) => <li key={index}>{toDo}</li>)*/
+              toDos.map((toDo, index) => {
+                return <li key={index}>{toDo}</li>
+              })
+            }
+          </ul>
+        )
+      }
+    }
+
+    ReactDOM.render(<App />, document.getElementById('example'));
 
   </script>
 </body>
