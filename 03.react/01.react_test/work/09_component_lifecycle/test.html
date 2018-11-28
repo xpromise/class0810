@@ -17,6 +17,69 @@
     2. 切换时间为2S
     3. 点击按钮从界面中移除组件界面
    */
+
+  class LifeCircle extends React.Component {
+    //初始化状态数据
+    constructor (props) {
+      super(props);
+      console.log('constructor()');
+      this.state = {
+        text: 'hello LifeCircle'
+      }
+    }
+
+    //组件将要挂载，页面还没有显示组件内容
+    //不能做太多耗时操作
+    componentWillMount () {
+      console.log('componentWillMount()');
+    }
+
+    //组件已经挂载，页面就显示组件内容了
+    //发送ajax请求和设置定时器等异步任务
+    componentDidMount () {
+      console.log('componentDidMount()');
+      setTimeout(() => {
+        this.setState({text: 123456});
+      }, 1000)
+    }
+
+    shouldComponentUpdate () {
+      console.log('shouldComponentUpdate()');
+      //要求必须返回布尔值  true会触发接下来的生命周期函数  false就不会触发，从而不会重新渲染组件
+      return true;
+    }
+    //组件将要更新
+    componentWillUpdate () {
+      console.log('componentWillUpdate()');
+    }
+    //组件已经更新完毕
+    componentDidUpdate () {
+      console.log('componentDidUpdate()');
+    }
+
+    //组件将要卸载
+    //做收尾工作，如清除定时器等
+    componentWillUnmount () {
+      console.log('componentWillUnmount()');
+    }
+
+    handleClick = () => {
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'))
+    }
+
+    render () {
+      console.log('render()');
+      return (
+        <div>
+          <h1>{this.state.text}</h1>
+          {/*<button onClick={() => {ReactDOM.unmountComponentAtNode(document.getElementById('example'))}}>卸载组件</button>*/}
+          <button onClick={this.handleClick}>卸载组件</button>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<LifeCircle />, document.getElementById('example'));
 </script>
 </body>
 </html>
