@@ -14,15 +14,18 @@
 <script type="text/babel">
   /*
   验证:
-  虚拟DOM+DOM Diff算法: 最小化页面重绘
+  虚拟DOM+DOM Diff算法: 最小化页面重排重绘，减少重排重绘次数
   */
 
   class HelloWorld extends React.Component {
-    constructor(props) {
+    /*constructor(props) {
       super(props)
       this.state = {
           date: new Date()
       }
+    }*/
+    state = {
+      date: new Date()
     }
 
     componentDidMount () {

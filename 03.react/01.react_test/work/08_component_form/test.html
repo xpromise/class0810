@@ -17,6 +17,42 @@
     2. 输入用户名密码后, 点击登陆提示输入信息
     3. 不提交表单
   */
+  //定义组件
+  class Form extends React.Component {
+    state = {
+      username: '',
+      password: ''
+    }
+
+    handleUsername = e => {
+      const username = e.target.value.trim();
+      this.setState({username});
+    }
+
+    handlePassword = e => {
+      const password = e.target.value.trim();
+      this.setState({password});
+    }
+
+    handleLogin = e => {
+      const {username, password} = this.state;
+      alert(`用户名：${username}   密码：${password}`);
+      e.preventDefault && e.preventDefault();
+      return false;
+    }
+
+    render () {
+      return (
+        <form action="xxx">
+          用户名：<input type="text" onChange={this.handleUsername}/> <br/>
+          密码：<input type="password" onChange={this.handlePassword}/> <br/>
+          <input type="submit" value="登录" onClick={this.handleLogin}/>
+        </form>
+      )
+    }
+  }
+  //渲染组件
+  ReactDOM.render(<Form />, document.getElementById('example'));
 </script>
 </body>
 </html>
