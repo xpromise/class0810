@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+<body>
+<div id="example"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">
+  /*
+  需求: 自定义组件
+    1. 让指定的文本做显示/隐藏的动画
+    2. 切换时间为2S
+    3. 点击按钮从界面中移除组件界面
+   */
+
+  class LifeCircle extends React.Component {
+
+    state = {
+      opacity: 1
+    }
+    //组件已经挂载完毕
+    componentDidMount () {
+      this.timer = setInterval(() => {
+        let opacity = this.state.opacity - 0.1;
+        opacity = opacity >= 0 ? opacity : 1;
+        this.setState({opacity})
+      }, 100)
+    }
+
+    handleClick = () => {
+      //卸载组件
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+    }
+    //组件将要卸载
+    componentWillUnmount () {
+      //清除定时器
+      clearInterval(this.timer);
+    }
+
+    render () {
+      console.log('render()');
+      const {opacity} = this.state;
+      return (
+        <div>
+          <h1 style={{opacity}}>React学不会，怎么办？</h1>
+          <button onClick={this.handleClick}>不活了</button>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<LifeCircle />, document.getElementById('example'));
+</script>
+</body>
+</html>
