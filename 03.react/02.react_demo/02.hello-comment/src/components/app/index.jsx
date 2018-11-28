@@ -21,6 +21,19 @@ class App extends Component {
     ]
   }
   
+  add = comment => {
+    //更新状态
+    this.setState({
+      comments: [comment, ...this.state.comments]
+    })
+  }
+  
+  del = delIndex => {
+    this.setState({
+      comments: this.state.comments.filter((item, index) => delIndex !== index)
+    })
+  }
+  
   render () {
     //获取comments
     const {comments} = this.state;
@@ -36,8 +49,8 @@ class App extends Component {
           </div>
         </header>
         <div className="container">
-          <CommentAdd />
-          <CommentList comments={comments}/>
+          <CommentAdd add={this.add}/>
+          <CommentList comments={comments} del={this.del}/>
         </div>
       </div>
     )

@@ -5,7 +5,16 @@ import './index.css';
 
 class CommentItem extends Component {
   static propTypes = {
-    comment: PropTypes.object.isRequired
+    comment: PropTypes.object.isRequired,
+    del: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired
+  }
+  
+  delComment = () => {
+    // console.log(this.props.index);
+    if (window.confirm(`您确认要删除${this.props.comment.name}吗？`)) {
+      this.props.del(this.props.index);
+    }
   }
   
   render () {
@@ -15,7 +24,7 @@ class CommentItem extends Component {
     return (
       <li className="list-group-item">
         <div className="handle">
-          <a href="javascript:;">删除</a>
+          <a href="javascript:;" onClick={this.delComment}>删除</a>
         </div>
         <p className="user"><span >{name}</span><span>说:</span></p>
         <p className="centence">{content}</p>
