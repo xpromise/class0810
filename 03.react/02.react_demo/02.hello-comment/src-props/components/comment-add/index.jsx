@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import PubSub from 'pubsub-js';
+import PropTypes from 'prop-types';
 
 class CommentAdd extends Component {
+  static propTypes = {
+    add: PropTypes.func.isRequired
+  }
   
   state = {
     name: '',
@@ -27,8 +30,8 @@ class CommentAdd extends Component {
   addComment = () => {
     //获取当前用户填写的信息
     const {name, content} = this.state;
-    //发布消息
-    PubSub.publish('ADD COMMENT', {name, content});
+    //更新comments
+    this.props.add({name, content});
     //清空用户填写数据
     this.setState({name: '', content: ''});
   }

@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "prop-types": "15.6.2",
+    "pubsub-js": "^1.7.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1",
-    "prop-types": "15.6.2"
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

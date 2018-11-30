@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import PubSub from 'pubsub-js';
 
 class List extends Component {
+  static propTypes = {
+   searchName: PropTypes.string.isRequired
+  }
   
   state = {
     init: true,
@@ -11,40 +14,34 @@ class List extends Component {
     error: false
   }
   
-  componentDidMount () {
-    //订阅消息: 一旦订阅的消息发布了，就会执行后面的回调函数来处理
-    //消息订阅发布机制：适用于兄弟组件通信、爷爷和孙子组件通信
-    PubSub.subscribe('SEARCH NAME', (msg, data) => {
-      console.log(msg, data);
-      /*
-        msg 消息名称
-        data 发布消息的具体内容
-       */
-      //将页面改为loading显示
-      this.setState({
-        init: false,
-        loading: true
-      })
-      //发送ajax请求
-      axios.get(`https://api.github.com/search/users?q=${data}`)
-        .then(res => {
-          //请求成功
-          //将页面显示查找到用户内容
-          this.setState({
-            loading: false,
-            success: res.data.items.map(item => ({name: item.login, url: item.html_url, image: item.avatar_url}))
-          })
+  componentWillReceiveProps (props) {
+    /*console.log(this.props);
+    console.log(props);
+    console.log('componentWillReceiveProps()');*/
+    //将页面改为loading显示
+    this.setState({
+      init: false,
+      loading: true
+    })
+    //发送ajax请求
+    axios.get(`https://api.github.com/search/users?q=${props.searchName}`)
+      .then(res => {
+        //请求成功
+        //将页面显示查找到用户内容
+        this.setState({
+          loading: false,
+          success: res.data.items.map(item => ({name: item.login, url: item.html_url, image: item.avatar_url}))
         })
-        .catch(err => {
-          // setTimeout(() => {
+      })
+      .catch(err => {
+        // setTimeout(() => {
           this.setState({
             loading: false,
             success: null,
             error: true
           })
-          // }, 1000)
-        })
-    })
+        // }, 1000)
+      })
   }
   
   render () {

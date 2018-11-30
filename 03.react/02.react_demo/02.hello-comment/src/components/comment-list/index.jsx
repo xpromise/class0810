@@ -1,18 +1,38 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-
+import PubSub from 'pubsub-js';
 //引入单个评论组件
 import CommentItem from '../comment-item';
 
 class CommentList extends Component {
-  static propTypes = {
-    comments: PropTypes.array.isRequired,
-    del: PropTypes.func.isRequired
+  state = {
+    comments: [
+      {
+        name: 'Jack',
+        content: 'I Love Rose'
+      },
+      {
+        name: 'Rose',
+        content: 'I Love 老王'
+      }
+    ]
+  }
+  
+  componentDidMount () {
+    PubSub.subscribe('ADD COMMENT', (msg, data) => {
+      this.setState({
+        comments: [data, ...this.state.comments]
+      })
+    })
+  }
+  
+  del = delIndex => {
+    this.setState({
+      comments: this.state.comments.filter((item, index) => delIndex !== index)
+    })
   }
   
   render () {
-    //获取组件外传递的props数据
-    const {comments, del} = this.props;
+    const {comments} = this.state;
     
     return (
       <div className="col-md-8">
@@ -22,7 +42,7 @@ class CommentList extends Component {
             ? (
               <ul className="list-group">
                 {
-                  comments.map((comment, index) => <CommentItem key={index} comment={comment} del={del} index={index}/>)
+                  comments.map((comment, index) => <CommentItem key={index} comment={comment} del={this.del} index={index}/>)
                 }
               </ul>
             )
