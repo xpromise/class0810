@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app';
+import {Provider} from 'react-redux';
+//引入容器组件
+import App from './containers/app';
 
 import store from './redux/store';
 
-render();
+ReactDOM.render((
+  //Provider负责1. 将状态传递到所有组件中，2. 一旦状态发生变化，重新渲染组件
+  <Provider store={store}>
+    <App />
+  </Provider>
+), document.getElementById('root'));
 
-//订阅的当前store对象管理的状态
-//一旦状态发生变化，就会触发当前subscribe设置的回调函数
-store.subscribe(render);
-
-function render() {
-  ReactDOM.render(<App store={store}/>, document.getElementById('root'));
-}

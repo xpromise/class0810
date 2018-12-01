@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import {increment, decrement} from '../../redux/actions';
 
 class App extends Component {
   static propTypes = {
-    number: PropTypes.number.isRequired,
-    increment: PropTypes.func.isRequired,
-    decrement: PropTypes.func.isRequired
+    store: PropTypes.object.isRequired
   }
   
   increment = () => {
@@ -14,23 +13,26 @@ class App extends Component {
     const {value} = this.select;
     console.log(value);
     //更新状态
-    this.props.increment(+value);
+    // this.props.store.dispatch({type: 'INCREMENT', data: +value})
+    const action = increment(+value);
+    this.props.store.dispatch(action);
   }
   
   decrement = () => {
     //获取select值
     const {value} = this.select;
     //更新状态
-    this.props.decrement(+value);
+    const action = decrement(+value);
+    this.props.store.dispatch(action);
   }
   
   incrementIfOdd = () => {
-    const number = this.props.number;
+    const number = this.props.store.getState();
     if (number % 2 === 1) {
       //获取select值
       const {value} = this.select;
       //更新状态
-      this.props.increment(+value);
+      this.props.store.dispatch(increment(+value));
     }
   }
   
@@ -40,12 +42,12 @@ class App extends Component {
       const {value} = this.select;
       console.log(value);
       //更新状态
-      this.props.increment(+value);
+      this.props.store.dispatch(increment(+value));
     }, 1000)
   }
   
   render () {
-    const number = this.props.number;
+    const number = this.props.store.getState();
     
     return (
       <div>
